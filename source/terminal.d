@@ -23,6 +23,9 @@ module terminal;
 version(linux)
 	enum SIGWINCH = 28; // FIXME: confirm this is correct on other posix
 
+version(OSX)
+	enum SIGWINCH = 28; // FIXME: confirm this is correct on other posix
+
 version(Posix) {
 	__gshared bool windowSizeChanged = false;
 	__gshared bool interrupted = false; /// you might periodically check this in a long operation and abort if it is set. Remember it is volatile. It is also sent through the input event loop via RealTimeConsoleInput
@@ -2794,7 +2797,7 @@ class LineGetter {
 				/* Insert the character (unless it is backspace, tab, or some other control char) */
 				auto ch = e.characterEvent.character;
 				switch(ch) {
-					case 4: // ctrl+d will also send a newline-equivalent 
+					case 4: // ctrl+d will also send a newline-equivalent
 					case '\r':
 					case '\n':
 						justHitTab = false;
